@@ -1,28 +1,34 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 
 import { TeamsPage } from '../pages'
+import { EliteApi } from '../../shared/shared';
 
-/**
- * Generated class for the Tournaments page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
 @Component({
   selector: 'page-tournaments',
   templateUrl: 'tournaments.page.html',
 })
 export class TournamentsPage {
+  tournaments: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    private eliteApi: EliteApi, private loadingController: LoadingController) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad Tournaments');
+    let loader = this.loadingController.create({
+      content: 'Getting tournaments...'
+    });
+
+    loader.present().then(() => {
+      this.eliteApi.getTournaments().then(data => {
+        this.tournaments = data;
+        loader.dismiss();
+      });
+    });
   }
 
-  itemTapped() {
-    this.navCtrl.push(TeamsPage);
+  itemTapped($event, tourney) {
+    this.navCtrl.push(TeamsPage, tourney);
   }
 }
