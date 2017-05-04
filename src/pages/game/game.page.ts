@@ -12,11 +12,11 @@ export class GamePage {
   game: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private eliteApi: EliteApi) {
-    this.game = this.navParams.data;
+    this.game = {};
   }
 
   ionViewDidLoad() {
-    
+    this.game = this.navParams.data;
   }
 
   teamTapped(teamId) {

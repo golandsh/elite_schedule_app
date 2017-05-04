@@ -13,9 +13,13 @@ import { EliteApi } from '../../shared/shared';
 export class TeamDetailPage {
   games: any[];
   team: any;
+  teamStanding: any;
   private tourneyData: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private eliteApi: EliteApi) { }
+  constructor(public navCtrl: NavController, public navParams: NavParams, private eliteApi: EliteApi) {
+    this.teamStanding = {};
+    this.team = {};
+   }
 
   ionViewDidLoad() {
     this.team = this.navParams.data;
@@ -38,6 +42,8 @@ export class TeamDetailPage {
         };
       })
       .value();
+    
+    this.teamStanding = _.find(this.tourneyData.standings, { 'teamId': this.team.id });
   }
 
   getScoreDisplay(isTeam1, team1Score, team2Score) {
