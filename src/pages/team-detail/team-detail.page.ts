@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -19,8 +19,13 @@ export class TeamDetailPage {
   teamStanding: any;
   private tourneyData: any;
   useDateFilter = false;
+  isFollowing = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private eliteApi: EliteApi) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private eliteApi: EliteApi,
+              private alertController: AlertController,
+              private toastController: ToastController) {
     this.teamStanding = {};
     this.team = {};
    }
@@ -74,6 +79,44 @@ export class TeamDetailPage {
     }
     else {
       this.games = this.allGames;
+    }
+  }
+
+  getScoreWorL(game) {
+    return game.scoreDisplay ? game.scoreDisplay[0] : '';
+  }
+
+  getScoreDisplayBadgeClass(game) {
+    return game.scoreDisplay.indexOf('W:') === 0 ? 'primary' : 'danger';
+  }
+
+  toggleFollow() {
+    if (this.isFollowing) {
+      let confirm = this.alertController.create({
+        title: 'Unfollow?',
+        message: 'Are you sure you want to unfollow?',
+        buttons: [
+          {
+            text: 'Yes',
+            handler: () => {
+              this.isFollowing = false;
+              // TODO: persist data
+
+              let toast = this.toastController.create({
+                message: 'You have unfollowed this team.',
+                duration: 2000,
+                position: 'bottom'
+              });
+              toast.present();
+            }
+          },
+          { text: 'No' }
+        ]
+      });
+      confirm.present();
+    } else {
+      this.isFollowing = true;
+      // TODO: persist data
     }
   }
 }
