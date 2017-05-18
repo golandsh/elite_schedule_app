@@ -3,9 +3,10 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { HttpModule } from '@angular/http';
 import { IonicStorageModule } from '@ionic/storage';
+import { AgmCoreModule } from 'angular2-google-maps/core';
 
 import { MyApp } from './app.component';
-import { GamePage, MyTeamsPage, TeamDetailPage, TeamsPage, TournamentsPage, StandingsPage, TeamHomePage } from '../pages/pages';
+import { GamePage, MyTeamsPage, TeamDetailPage, TeamsPage, TournamentsPage, StandingsPage, TeamHomePage, MapPage } from '../pages/pages';
 
 import { EliteApi, UserSettings } from '../shared/shared';
 
@@ -21,13 +22,15 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     TeamsPage,
     TournamentsPage,
     StandingsPage,
-    TeamHomePage
+    TeamHomePage,
+    MapPage
   ],
   imports: [
     BrowserModule,
     HttpModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyBbsOlMryAHu2ESwHHSwrDBIUU7fiENNoM'})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -37,7 +40,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     TeamsPage,
     TournamentsPage,
     StandingsPage,
-    TeamHomePage
+    TeamHomePage,
+    MapPage
   ],
   providers: [
     EliteApi,
