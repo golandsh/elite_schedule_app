@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { EliteApi } from '../../shared/shared';
+declare var window: any;
 
 @Component({
   selector: 'page-map',
@@ -24,6 +25,10 @@ export class MapPage {
       zoom: 12,
       markerLabel: games.location
     };
+  }
+
+  getDirections() {
+    window.location = `geo:${this.map.lat},${this.map.lng};u=35`;
   }
 
 }
