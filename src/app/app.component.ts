@@ -13,7 +13,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   favouriteTeams: any[];
-  rootPage: any = MyTeamsPage;
+  rootPage: any;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
     private userSettings: UserSettings, private loadingController: LoadingController, private eliteApi: EliteApi,
@@ -27,8 +27,12 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-      this.refreshFavourites();
-      this.events.subscribe('favourites:changed', () => this.refreshFavourites());
+
+      this.userSettings.initStorage().then(() => {
+        this.rootPage = MyTeamsPage;
+        this.refreshFavourites();
+        this.events.subscribe('favourites:changed', () => this.refreshFavourites());
+      });
     });
   }
 

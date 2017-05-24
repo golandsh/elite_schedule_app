@@ -6,12 +6,11 @@ import { SqlStorage } from './shared';
 
 @Injectable()
 export class UserSettings {
-    public db: SQLite;
     public sql: SqlStorage;
-    constructor(public storage: Storage, private events: Events, private platform: Platform) {
+    constructor(public storage: Storage, private events: Events, private platform: Platform,
+        private db: SQLite) {
         if (this.platform.is('cordova')) {
-            this.db = new SQLite();
-            this.sql = new SqlStorage(this.db);
+            this.sql = new SqlStorage(this.platform, this.db);
         } else {
             console.warn('SQLite plugin not installed. Falling back to regular Ionic Storage.');
         }
@@ -72,10 +71,6 @@ export class UserSettings {
     }
 
     initStorage() {
-        if (this.sql){
-            return this.sql.initializeDatabase();
-        } else {
-            return new Promise(resolve => resolve());
-        }
+        return new Promise(resolve => resolve());
     }
 }
